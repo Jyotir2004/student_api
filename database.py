@@ -59,3 +59,15 @@ CREATE TABLE IF NOT EXISTS users(
         
 
 
+# def get_db():
+#     conn = sqlite3.connect("students.db")
+#     conn.row_factory=sqlite3.Row
+#     return conn
+
+
+def get_db():
+    db = Database()
+    try:
+        yield db
+    finally:
+        db.close()

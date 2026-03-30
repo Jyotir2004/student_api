@@ -1,19 +1,14 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List
-from routes.auth_routes import router as auth_router
+from fastapi import FastAPI
+from user_router import router as user_router
+from database import get_db
+ # Folder name must match exactly
 
 app = FastAPI()
+app.include_router(user_router, prefix="/user", tags=["User"])
 
-app.include_router(auth_router)
-
-
-app = FastAPI()
-from routes.auth_routes import router as auth_router
-
-app = FastAPI()
-
-app.include_router(auth_router)
 
 class user(BaseModel):
     user_id: int
@@ -24,6 +19,13 @@ class user(BaseModel):
     role_id: int
 
 users: List[user] = []
+
+
+@app.get("/")
+def home():
+    db = get_db()
+    return {"message": "API working!", "db": db}
+
 
 @app.get("/users")
 def read_root():
